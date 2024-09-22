@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ข้อมูลโภชนาการ</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        padding-top: 50px;
+      }
+      .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .back-button {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="welcomeMessage" class="mb-4 text-center text-primary"></h1>
+      <h1 id="foodTitle" class="mb-4 text-center">ข้อมูลโภชนาการ</h1>
+      <div id="nutrientInfo" class="card pb-5">
+        <div class="card-body">
+          <!-- <h2 class="card-title mb-4">โภชนาการ</h2> -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>สารอาหาร</th>
+                <th>ปริมาณ</th>
+                <th>% ปริมาณแนะนำต่อวัน</th>
+              </tr>
+            </thead>
+            <tbody id="nutrientTable">
+              <!-- Nutrient data will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <a href="random.html" class="btn btn-warning btn-lg back-button">
+      <i class="bi bi-arrow-left-circle me-2"></i>กลับไปหน้าสุ่มเมนูอาหาร
+    </a>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Check if user is signed in
+      const userName = localStorage.getItem('userName');
+      if (!userName) {
+        window.location.href = 'index.html';
+      } else {
+        document.getElementById(
+          'welcomeMessage'
+        ).textContent = `ยินดีต้อนรับ, ${userName}!`;
+      }
+
+      const nutrientData = {
+        สเต๊กเนื้อ: [
+          { name: 'พลังงานทั้งหมด', amount: '133', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '5 g', dailyValue: '8%' },
+          { name: 'ไขมันอิ่มตัว', amount: '0 g', dailyValue: '0%' },
+          { name: 'คลอเรสเตอรอล', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โซเดียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โพแทสเซียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '0g', dailyValue: '0%' },
+          { name: 'ใยอาหาร', amount: '0 g', dailyValue: '0%' },
+          { name: 'โปรตีน', amount: '21g', dailyValue: '42%' },
+          { name: 'วิตามินเอ', amount: '0 %', dailyValue: '-' },
+          { name: 'วิตามินซี', amount: '0 %', dailyValue: '-' },
+          { name: 'แคลเซียม', amount: '0 %', dailyValue: '-' },
+          { name: 'เหล็ก', amount: '0 %', dailyValue: '-' },
+          { name: 'ไทอามิน', amount: '0 %', dailyValue: '-' },
+          { name: 'ไรโบพลาวิน', amount: '0 %', dailyValue: '-' },
+          { name: 'ไนอาซิน', amount: '0 %', dailyValue: '-' },
+          { name: 'วิตามินอี', amount: '0 %', dailyValue: '-' },
+          { name: 'ฟอสฟอรัส', amount: '0 %', dailyValue: '-' },
+        ],
+        สเต็กไก่: [
+          { name: 'พลังงานทั้งหมด', amount: '354', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '59.4%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '6.6 g', dailyValue: '11%' },
+          { name: 'ไขมันอิ่มตัว', amount: '2.1 g', dailyValue: '11%' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงซ้อน', amount: '1.6 g', dailyValue: '-' },
+          {
+            name: 'ไขมันไม่อิ่มตัวเชิงเดี่ยว',
+            amount: '2.6 g',
+            dailyValue: '-',
+          },
+          { name: 'ไขมันทราน', amount: '0 g', dailyValue: '-' },
+          { name: 'คลอเรสเตอรอล', amount: '170 mg', dailyValue: '57%' },
+          { name: 'โซเดียม', amount: '3853.3 mg', dailyValue: '161%' },
+          { name: 'โพแทสเซียม', amount: '623.6 mg', dailyValue: '18%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '7.1g', dailyValue: '3%' },
+          { name: 'ใยอาหาร', amount: '0.6 g', dailyValue: '3%' },
+          { name: 'น้ำตาล', amount: '5.1 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '66.5g', dailyValue: '133%' },
+          { name: 'วิตามินเอ', amount: '0 %', dailyValue: '-' },
+          { name: 'วิตามินซี', amount: '0 %', dailyValue: '-' },
+          { name: 'แคลเซียม', amount: '3.149 %', dailyValue: '-' },
+          { name: 'เหล็ก', amount: '13.309 %', dailyValue: '-' },
+          { name: 'วิตามินดี', amount: '2 %', dailyValue: '-' },
+          { name: 'วิตามินบี 6', amount: '61.8 %', dailyValue: '-' },
+          { name: 'วิตามินบี 12', amount: '10 %', dailyValue: '-' },
+          { name: 'แมกนีเซียม', amount: '19.469 %', dailyValue: '-' },
+          { name: 'ไทอามิน', amount: '0.72 %', dailyValue: '-' },
+          { name: 'ไรโบพลาวิน', amount: '1.44 %', dailyValue: '-' },
+          { name: 'ไนอาซิน', amount: '2.16 %', dailyValue: '-' },
+          { name: 'วิตามินอี', amount: '0 %', dailyValue: '-' },
+          { name: 'วิตามินเค', amount: '0 %', dailyValue: '-' },
+          { name: 'ซิงค์', amount: '0.36 %', dailyValue: '-' },
+          { name: 'ฟอสฟอรัส', amount: '5.4 %', dailyValue: '-' },
+        ],
+
+        สุกี้น้ำ: [
+          { name: 'พลังงานทั้งหมด', amount: '261', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '49.5%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '5.5 g', dailyValue: '9%' },
+          { name: 'ไขมันอิ่มตัว', amount: '1.6 g', dailyValue: '8%' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงซ้อน', amount: '1 g', dailyValue: '-' },
+          {
+            name: 'ไขมันไม่อิ่มตัวเชิงเดี่ยว',
+            amount: '1.9 g',
+            dailyValue: '-',
+          },
+          { name: 'ไขมันทราน', amount: '0 g', dailyValue: '-' },
+          { name: 'คลอเรสเตอรอล', amount: '188 mg', dailyValue: '63%' },
+          { name: 'โซเดียม', amount: '747 mg', dailyValue: '32%' },
+          { name: 'โพแทสเซียม', amount: '717 mg', dailyValue: '21%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '41g', dailyValue: '14%' },
+          { name: 'ใยอาหาร', amount: '4.1 g', dailyValue: '17%' },
+          { name: 'น้ำตาล', amount: '2.3 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '12g', dailyValue: '24%' },
+          { name: 'วิตามินเอ', amount: '148.4 %', dailyValue: '-' },
+          { name: 'วิตามินซี', amount: '113 %', dailyValue: '-' },
+          { name: 'แคลเซียม', amount: '18.75 %', dailyValue: '-' },
+          { name: 'เหล็ก', amount: '26.5 %', dailyValue: '-' },
+          { name: 'วิตามินดี', amount: '10 %', dailyValue: '-' },
+          { name: 'วิตามินบี 6', amount: '15.05 %', dailyValue: '-' },
+          { name: 'วิตามินบี 12', amount: '7 %', dailyValue: '-' },
+          { name: 'แมกนีเซียม', amount: '24.95 %', dailyValue: '-' },
+          { name: 'วิตามินเค', amount: '129.5 %', dailyValue: '-' },
+          { name: 'ซิงค์', amount: '2.5 %', dailyValue: '-' },
+        ],
+
+        สลัดทูน่า: [
+          { name: 'พลังงานทั้งหมด', amount: '104', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '44.1%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '4.9 g', dailyValue: '8%' },
+          { name: 'ไขมันอิ่มตัว', amount: '0 g', dailyValue: '0%' },
+          { name: 'คลอเรสเตอรอล', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โซเดียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โพแทสเซียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '6g', dailyValue: '2%' },
+          { name: 'ใยอาหาร', amount: '0 g', dailyValue: '0%' },
+          { name: 'น้ำตาล', amount: '0 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '9g', dailyValue: '18%' },
+        ],
+
+        ยำเส้นแก้ว: [
+          { name: 'พลังงานทั้งหมด', amount: '359', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '167.4%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '18.6 g', dailyValue: '29%' },
+          { name: 'ไขมันอิ่มตัว', amount: '6.4 g', dailyValue: '32%' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงซ้อน', amount: '3 g', dailyValue: '-' },
+          {
+            name: 'ไขมันไม่อิ่มตัวเชิงเดี่ยว',
+            amount: '7.4 g',
+            dailyValue: '-',
+          },
+          { name: 'ไขมันทราน', amount: '0 g', dailyValue: '-' },
+          { name: 'คลอเรสเตอรอล', amount: '217.4 mg', dailyValue: '73%' },
+          { name: 'โซเดียม', amount: '177.2 mg', dailyValue: '8%' },
+          { name: 'โพแทสเซียม', amount: '638.3 mg', dailyValue: '19%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '1g', dailyValue: '1%' },
+          { name: 'ใยอาหาร', amount: '0.1 g', dailyValue: '1%' },
+          { name: 'น้ำตาล', amount: '0.5 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '45.1g', dailyValue: '91%' },
+          { name: 'วิตามินเอ', amount: '1.95 %', dailyValue: '-' },
+          { name: 'วิตามินซี', amount: '15.8 %', dailyValue: '-' },
+          { name: 'แคลเซียม', amount: '10.7 %', dailyValue: '-' },
+          { name: 'เหล็ก', amount: '8.65 %', dailyValue: '-' },
+          { name: 'วิตามินดี', amount: '10.5 %', dailyValue: '-' },
+          { name: 'วิตามินบี 6', amount: '33.15 %', dailyValue: '-' },
+          { name: 'วิตามินบี 12', amount: '13.5 %', dailyValue: '-' },
+          { name: 'แมกนีเซียม', amount: '13 %', dailyValue: '-' },
+          { name: 'ไทอามิน', amount: '0.2 %', dailyValue: '-' },
+          { name: 'ไรโบพลาวิน', amount: '0.1 %', dailyValue: '-' },
+          { name: 'ไนอาซิน', amount: '0.3 %', dailyValue: '-' },
+          { name: 'วิตามินอี', amount: '0.2 %', dailyValue: '-' },
+          { name: 'วิตามินเค', amount: '0.4 %', dailyValue: '-' },
+          { name: 'ซิงค์', amount: '7.25 %', dailyValue: '-' },
+          { name: 'ฟอสฟอรัส', amount: '15.9 %', dailyValue: '-' },
+        ],
+        ผักบล็อกโคลี่หมู: [
+          { name: 'พลังงานทั้งหมด', amount: '144', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '63%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '7 g', dailyValue: '11%' },
+          { name: 'ไขมันอิ่มตัว', amount: '0.7 g', dailyValue: '4%' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงซ้อน', amount: '2.6 g', dailyValue: '-' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงเดี่ยว', amount: '1 g', dailyValue: '-' },
+          { name: 'ไขมันทราน', amount: '0 g', dailyValue: '-' },
+          { name: 'คลอเรสเตอรอล', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โซเดียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โพแทสเซียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '7.3g', dailyValue: '3%' },
+          { name: 'ใยอาหาร', amount: '0 g', dailyValue: '0%' },
+          { name: 'น้ำตาล', amount: '1.7 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '12.9g', dailyValue: '26%' },
+          { name: 'วิตามินเอ', amount: '169.73 %', dailyValue: '-' },
+          { name: 'วิตามินซี', amount: '0 %', dailyValue: '-' },
+          { name: 'แคลเซียม', amount: '0.55 %', dailyValue: '-' },
+          { name: 'เหล็ก', amount: '29.165 %', dailyValue: '-' },
+          { name: 'วิตามินดี', amount: '0 %', dailyValue: '-' },
+          { name: 'วิตามินบี 6', amount: '0 %', dailyValue: '-' },
+          { name: 'วิตามินบี 12', amount: '0 %', dailyValue: '-' },
+          { name: 'แมกนีเซียม', amount: '0 %', dailyValue: '-' },
+          { name: 'ไทอามิน', amount: '9.665 %', dailyValue: '-' },
+          { name: 'ไรโบพลาวิน', amount: '97.06 %', dailyValue: '-' },
+          { name: 'ไนอาซิน', amount: '34 %', dailyValue: '-' },
+          { name: 'วิตามินอี', amount: '0 %', dailyValue: '-' },
+          { name: 'วิตามินเค', amount: '0 %', dailyValue: '-' },
+          { name: 'ซิงค์', amount: '0.36 %', dailyValue: '-' },
+          { name: 'ฟอสฟอรัส', amount: '11.6%', dailyValue: '-' },
+        ],
+
+        ข้าวต้มปลา: [
+          { name: 'พลังงานทั้งหมด', amount: '220', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '14.4%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '1.6 g', dailyValue: '3%' },
+          { name: 'ไขมันอิ่มตัว', amount: '0.3 g', dailyValue: '2%' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงซ้อน', amount: '0.5 g', dailyValue: '-' },
+          {
+            name: 'ไขมันไม่อิ่มตัวเชิงเดี่ยว',
+            amount: '0.4 g',
+            dailyValue: '-',
+          },
+          { name: 'ไขมันทราน', amount: '0g', dailyValue: '-' },
+          { name: 'คลอเรสเตอรอล', amount: '67 mg', dailyValue: '23%' },
+          { name: 'โซเดียม', amount: '73 mg', dailyValue: '4%' },
+          { name: 'โพแทสเซียม', amount: '284 mg', dailyValue: '9%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '28.2g', dailyValue: '10%' },
+          { name: 'ใยอาหาร', amount: '0.4 g', dailyValue: '2%' },
+          { name: 'น้ำตาล', amount: '0.1 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '21g', dailyValue: '42%' },
+          { name: 'วิตามินเอ', amount: '2 %', dailyValue: '-' },
+          { name: 'วิตามินซี', amount: '0 %', dailyValue: '-' },
+          { name: 'แคลเซียม', amount: '6 %', dailyValue: '-' },
+          { name: 'เหล็ก', amount: '9 %', dailyValue: '-' },
+          { name: 'วิตามินดี', amount: '14 %', dailyValue: '-' },
+          { name: 'วิตามินบี 6', amount: '13 %', dailyValue: '-' },
+          { name: 'วิตามินบี 12', amount: '38 %', dailyValue: '-' },
+          { name: 'แมกนีเซียม', amount: '8 %', dailyValue: '-' },
+          { name: 'ไทอามิน', amount: '4 %', dailyValue: '-' },
+          { name: 'ไรโบพลาวิน', amount: '3 %', dailyValue: '-' },
+          { name: 'ไนอาซิน', amount: '7 %', dailyValue: '-' },
+          { name: 'วิตามินอี', amount: '1 %', dailyValue: '-' },
+          { name: 'วิตามินเค', amount: '0 %', dailyValue: '-' },
+          { name: 'ซิงค์', amount: '9 %', dailyValue: '-' },
+          { name: 'ฟอสฟอรัส', amount: '22 %', dailyValue: '-' },
+        ],
+
+        บะหมี่เส้นมันปลา: [
+          { name: 'พลังงานทั้งหมด', amount: '454', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '54%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '6 g', dailyValue: '10%' },
+          { name: 'ไขมันอิ่มตัว', amount: '0 g', dailyValue: '0%' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงซ้อน', amount: '0 g', dailyValue: '-' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงเดี่ยว', amount: '0 g', dailyValue: '-' },
+          { name: 'ไขมันทราน', amount: '0 g', dailyValue: '-' },
+          { name: 'คลอเรสเตอรอล', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โซเดียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โพแทสเซียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '50g', dailyValue: '17%' },
+          { name: 'ใยอาหาร', amount: '0 g', dailyValue: '0%' },
+          { name: 'น้ำตาล', amount: '0 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '50g', dailyValue: '100%' },
+        ],
+
+        ผัดวุ้นเส้นใส่ไข่: [
+          { name: 'พลังงานทั้งหมด', amount: '226', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '90%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '10 g', dailyValue: '16%' },
+          { name: 'ไขมันอิ่มตัว', amount: '0 g', dailyValue: '0%' },
+          { name: 'คลอเรสเตอรอล', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โซเดียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'โพแทสเซียม', amount: '0 mg', dailyValue: '0%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '25g', dailyValue: '9%' },
+          { name: 'ใยอาหาร', amount: '0 g', dailyValue: '0%' },
+          { name: 'น้ำตาล', amount: '0 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '9g', dailyValue: '18%' },
+        ],
+
+        กระเพราอกไก่: [
+          { name: 'พลังงานทั้งหมด', amount: '734', dailyValue: '-' },
+          { name: 'พลังงานจากไขมัน', amount: '67.5%', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '7.5 g', dailyValue: '12%' },
+          { name: 'ไขมันอิ่มตัว', amount: '2.3 g', dailyValue: '12%' },
+          { name: 'ไขมันไม่อิ่มตัวเชิงซ้อน', amount: '1.9 g', dailyValue: '-' },
+          {
+            name: 'ไขมันไม่อิ่มตัวเชิงเดี่ยว',
+            amount: '2.8 g',
+            dailyValue: '-',
+          },
+          { name: 'ไขมันทราน', amount: '0 g', dailyValue: '-' },
+          { name: 'คลอเรสเตอรอล', amount: '170 mg', dailyValue: '57%' },
+          { name: 'โซเดียม', amount: '276 mg', dailyValue: '12%' },
+          { name: 'โพแทสเซียม', amount: '750.6 mg', dailyValue: '22%' },
+          { name: 'คาร์โบไฮเดรตทั้งหมด', amount: '90.6g', dailyValue: '31%' },
+          { name: 'ใยอาหาร', amount: '1.8 g', dailyValue: '8%' },
+          { name: 'น้ำตาล', amount: '5 g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '73.2g', dailyValue: '147%' },
+          { name: 'วิตามินเอ', amount: '28.22 %', dailyValue: '-' },
+          { name: 'วิตามินซี', amount: '20.59 %', dailyValue: '-' },
+          { name: 'แคลเซียม', amount: '11.004 %', dailyValue: '-' },
+          { name: 'เหล็ก', amount: '36.07 %', dailyValue: '-' },
+          { name: 'วิตามินดี', amount: '2 %', dailyValue: '-' },
+          { name: 'วิตามินบี 6', amount: '78.264 %', dailyValue: '-' },
+          { name: 'วิตามินบี 12', amount: '10 %', dailyValue: '-' },
+          { name: 'แมกนีเซียม', amount: '28.064 %', dailyValue: '-' },
+          { name: 'ไทอามิน', amount: '0.5 %', dailyValue: '-' },
+          { name: 'ไรโบพลาวิน', amount: '1 %', dailyValue: '-' },
+          { name: 'ไนอาซิน', amount: '1.25 %', dailyValue: '-' },
+          { name: 'วิตามินอี', amount: '0.75 %', dailyValue: '-' },
+          { name: 'วิตามินเค', amount: '130.5 %', dailyValue: '-' },
+          { name: 'ซิงค์', amount: '10.256 %', dailyValue: '-' },
+          { name: 'ฟอสฟอรัส', amount: '1.5 %', dailyValue: '-' },
+        ],
+        ก๋วยเตี๋ยวเส้นบุกเนื้อตุ๋น: [
+          { name: 'แคลอรี่', amount: '192', dailyValue: '-' },
+          { name: 'ไขมันทั้งหมด', amount: '11.5g', dailyValue: '18%' },
+          { name: 'ไขมันอิ่มตัว', amount: '4.5g', dailyValue: '23%' },
+          { name: 'คอเลสเตอรอล', amount: '73mg', dailyValue: '25%' },
+          { name: 'โซเดียม', amount: '56mg', dailyValue: '3%' },
+          { name: 'โพแทสเซียม', amount: '327mg', dailyValue: '10%' },
+          { name: 'คาร์โบไฮเดรต', amount: '0g', dailyValue: '0%' },
+          { name: 'ไฟเบอร์', amount: '0g', dailyValue: '0%' },
+          { name: 'น้ำตาล', amount: '0g', dailyValue: '-' },
+          { name: 'โปรตีน', amount: '20.7g', dailyValue: '42%' },
+          { name: 'แคลเซียม', amount: '-', dailyValue: '2%' },
+          { name: 'เหล็ก', amount: '-', dailyValue: '10%' },
+          { name: 'วิตามินบี6', amount: '-', dailyValue: '31%' },
+          { name: 'วิตามินบี12', amount: '-', dailyValue: '25%' },
+          { name: 'แมกนีเซียม', amount: '-', dailyValue: '6%' },
+          { name: 'ไทอามิน', amount: '-', dailyValue: '5%' },
+          { name: 'ไรโบฟลาวิน', amount: '-', dailyValue: '7%' },
+          { name: 'ไนอาซิน', amount: '-', dailyValue: '31%' },
+          { name: 'วิตามินอี', amount: '-', dailyValue: '1%' },
+          { name: 'วิตามินเค', amount: '-', dailyValue: '2%' },
+          { name: 'สังกะสี', amount: '-', dailyValue: '25%' },
+          { name: 'ฟอสฟอรัส', amount: '-', dailyValue: '20%' },
+        ],
+        // Add more foods here...
+      };
+
+      // Function to get URL parameters
+      function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null
+          ? ''
+          : decodeURIComponent(results[1].replace(/\+/g, ' '));
+      }
+
+      // Get the food from the URL parameter
+      const food = getUrlParameter('food');
+
+      // Update the page title
+      document.getElementById(
+        'foodTitle'
+      ).textContent = `ข้อมูลโภชนาการสำหรับ ${food}`;
+
+      // Get the nutrient table body
+      const nutrientTable = document.getElementById('nutrientTable');
+
+      // Populate the nutrient table
+      if (nutrientData[food]) {
+        nutrientData[food].forEach((nutrient) => {
+          const row = nutrientTable.insertRow();
+          row.insertCell(0).textContent = nutrient.name;
+          row.insertCell(1).textContent = nutrient.amount;
+          row.insertCell(2).textContent = nutrient.dailyValue;
+        });
+      } else {
+        nutrientTable.innerHTML =
+          '<tr><td colspan="3" class="text-center">ยังไม่มีข้อมูลโภชนาการสำหรับเมนูนี้</td></tr>';
+      }
+    </script>
+  </body>
+</html>
